@@ -225,6 +225,42 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 @keyframes pdot{0%,100%{opacity:1}50%{opacity:.4}}
 .empty-state{text-align:center;padding:60px 20px;color:var(--dim);}
 .empty-state .ei{font-size:40px;margin-bottom:12px;opacity:.5;}
+
+/* API KEY BANNER */
+.api-banner{background:var(--s2);border:1px solid rgba(201,168,76,.4);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:12px;margin-bottom:0;}
+.api-banner.ok{border-color:rgba(39,174,96,.4);}
+.api-label{font-size:11px;color:var(--gold);font-family:"DM Mono",monospace;white-space:nowrap;}
+.api-label.ok{color:var(--green);}
+.api-input{flex:1;background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:7px 12px;color:var(--text);font-family:"DM Mono",monospace;font-size:12px;outline:none;}
+.api-input:focus{border-color:var(--gold);}
+.api-save{background:var(--gold);border:none;color:var(--black);padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:"DM Sans",sans-serif;white-space:nowrap;}
+.api-save:hover{opacity:.85;}
+
+/* GLOSSARY */
+.gl-cats{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;}
+.gl-cat{padding:4px 13px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:11px;cursor:pointer;transition:all .15s;font-family:"DM Sans",sans-serif;}
+.gl-cat:hover{border-color:var(--red);color:var(--text);}
+.gl-cat.active{background:var(--red);border-color:var(--red);color:white;}
+.gl-search{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-family:"DM Sans",sans-serif;font-size:13px;outline:none;margin-bottom:16px;transition:border-color .15s;}
+.gl-search:focus{border-color:var(--red);}
+.gl-search::placeholder{color:var(--dim);}
+.gl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;}
+.gl-card{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:16px 18px;transition:border-color .2s;}
+.gl-card:hover{border-color:var(--bl);}
+.gl-term{font-family:"Syne",sans-serif;font-size:14px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.gl-tag{font-size:9px;font-family:"DM Mono",monospace;padding:2px 7px;border-radius:4px;flex-shrink:0;}
+.gl-tag.credit{background:rgba(201,168,76,.15);color:var(--gold);border:1px solid rgba(201,168,76,.25);}
+.gl-tag.risk{background:rgba(231,76,60,.12);color:#E74C3C;border:1px solid rgba(231,76,60,.2);}
+.gl-tag.metrics{background:rgba(39,174,96,.12);color:var(--green);border:1px solid rgba(39,174,96,.2);}
+.gl-tag.product{background:rgba(204,0,0,.12);color:var(--red);border:1px solid rgba(204,0,0,.2);}
+.gl-tag.shopping{background:rgba(46,134,193,.12);color:var(--blue);border:1px solid rgba(46,134,193,.2);}
+.gl-tag.banking{background:rgba(142,68,173,.12);color:var(--purple);border:1px solid rgba(142,68,173,.2);}
+.gl-tag.fraud{background:rgba(230,126,34,.12);color:var(--amber);border:1px solid rgba(230,126,34,.2);}
+.gl-tag.strategy{background:rgba(26,188,156,.12);color:#1ABC9C;border:1px solid rgba(26,188,156,.2);}
+.gl-def{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:6px;}
+.gl-why{font-size:11px;color:var(--dim);line-height:1.5;border-top:1px solid var(--border);padding-top:7px;margin-top:7px;}
+.gl-why strong{color:var(--red);}
+.gl-count{font-size:11px;color:var(--dim);font-family:"DM Mono",monospace;margin-bottom:16px;}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 </style>
 </head>
@@ -353,6 +389,83 @@ const MATH_CARDS = [
   ]},
 ];
 
+
+// ═══════════════════════ GLOSSARY ═══════════════════════
+const GLOSSARY = [
+  // ── CREDIT CARD ECONOMICS ──
+  {term:"Interchange Fee",cat:"credit",tag:"CREDIT",def:"A fee paid by the merchant's bank to Capital One every time a customer swipes a C1 card. Typically 1.5–2% of the transaction amount. This is Capital One's primary revenue source on credit cards — not interest.",why:"C1 PM context: Understanding interchange is critical for Shopping and rewards product cases. Higher spend = more interchange. That's why C1 Shopping and Venture X are designed to drive card-linked spend."},
+  {term:"APR (Annual Percentage Rate)",cat:"credit",tag:"CREDIT",def:"The annual interest rate charged on unpaid credit card balances. Capital One cards range from ~20–30% APR depending on creditworthiness. Applied monthly (APR ÷ 12) to the revolving balance.",why:"C1 PM context: Revolvers (customers who carry a balance) generate interest income. A 1% increase in revolver rate has enormous P&L impact. Always ask: is this a revolver or transactor population?"},
+  {term:"Revolving Balance",cat:"credit",tag:"CREDIT",def:"The portion of a credit card balance that is carried month-to-month (not paid in full). Revolvers pay APR interest on this balance. The core of C1's net interest margin business.",why:"C1 PM context: Features that increase engagement (Eno alerts, autopay setup) can reduce revolving balances — a double-edged sword: great for the customer, reduces interest revenue short-term."},
+  {term:"Transactor",cat:"credit",tag:"CREDIT",def:"A credit card customer who pays their full statement balance every month — incurring zero interest charges. Generates revenue only via interchange fees and annual fees.",why:"C1 PM context: Venture X customers skew transactor (high-income, full-pay). Revenue model = interchange + $395 fee, not interest. Product strategy differs completely from subprime/revolver segments."},
+  {term:"Revolver",cat:"credit",tag:"CREDIT",def:"A customer who carries a balance month-to-month and pays interest. The primary source of net interest income for Capital One. Higher credit risk, but higher revenue per customer.",why:"C1 PM context: Many C1 legacy products (Quicksilver, Platinum) target revolvers. Features like payment reminders or budget tools can reduce revolving — manage the tension between customer benefit and P&L."},
+  {term:"Credit Limit",cat:"credit",tag:"CREDIT",def:"The maximum amount a cardholder can charge on their card. Set by C1's underwriting model based on credit score, income, debt-to-income ratio, and risk tier. Customers can request increases.",why:"C1 PM context: Credit limit increases drive higher spend (and interchange). Auto-limit increases are a product feature with direct P&L impact. Auto Navigator pre-qualification is essentially a credit limit decision in real-time."},
+  {term:"Utilization Rate",cat:"credit",tag:"CREDIT",def:"The percentage of a credit limit being used. Formula: Balance ÷ Credit Limit. High utilization (>30%) hurts credit scores. CreditWise tracks this as a key metric.",why:"C1 PM context: CreditWise Score Simulator models utilization impact. Eno alerts that warn about high utilization are a product feature with direct customer value — and a retention driver."},
+  {term:"Minimum Payment",cat:"credit",tag:"CREDIT",def:"The smallest payment a cardholder must make each month to avoid a late fee. Typically 1–2% of the balance or $25. Paying only minimums maximizes revolver revenue for C1 but maximizes cost for the customer.",why:"C1 PM context: Autopay default (full balance vs. minimum) is a UX design decision with ethical + P&L implications. Director-level PMs must navigate this tension."},
+  {term:"Annual Fee",cat:"credit",tag:"CREDIT",def:"A yearly fee charged for premium credit cards. Venture X = $395/year. Must be offset by card benefits (travel credits, lounge access, rewards) to justify for the customer.",why:"C1 PM context: Year-1 vs. year-2 retention on Venture X is a key PM challenge. If perceived value < $395, customers downgrade. Feature design must make the $300 travel credit feel automatic and easy."},
+  {term:"Rewards Liability",cat:"credit",tag:"CREDIT",def:"The accounting cost of unredeemed rewards points/miles sitting on customer accounts. C1 carries this as a liability on its balance sheet until miles are redeemed.",why:"C1 PM context: If you add a new rewards feature, finance will ask about rewards liability impact. High redemption rates reduce liability (good for balance sheet) but cost cash."},
+  {term:"Net Interest Margin (NIM)",cat:"credit",tag:"CREDIT",def:"The spread between the interest C1 earns on loans/cards (APR) and what it pays to fund those loans (cost of funds). Core profitability metric for credit card businesses. NIM = Interest Income − Funding Cost.",why:"C1 PM context: When evaluating a new credit product, always ask: what's the expected NIM? A card with 25% APR and 3% cost of funds has 22% NIM before charge-offs and operating costs."},
+  {term:"Cost of Funds",cat:"credit",tag:"CREDIT",def:"The interest rate Capital One pays to borrow the money it then lends to cardholders. Usually tied to the Fed Funds Rate. If C1 funds at 3% and charges 20% APR, the gross NIM is 17%.",why:"C1 PM context: From your uploaded cases — the credit card over-limit case uses this directly. Cost of funds affects break-even analysis for any credit product or feature."},
+
+  // ── RISK & COLLECTIONS ──
+  {term:"Charge-Off",cat:"risk",tag:"RISK",def:"When Capital One determines a delinquent balance (usually 180+ days past due) is unlikely to be collected and writes it off as a loss. The charge-off rate is one of the most watched credit risk metrics.",why:"C1 PM context: Charge-off rate directly impacts P&L. A credit product feature that reduces default (e.g., better payment reminders, early hardship detection) has quantifiable P&L value. Always model charge-off assumptions."},
+  {term:"Delinquency Rate",cat:"risk",tag:"RISK",def:"The percentage of accounts that are 30, 60, or 90+ days past due. A leading indicator of future charge-offs. Tracked at 30-DPD, 60-DPD, 90-DPD buckets.",why:"C1 PM context: Eno payment alerts are a product that directly addresses early delinquency. If you can show a feature reduces 30-DPD by even 0.5%, you've quantified enormous P&L impact."},
+  {term:"Default Rate",cat:"risk",tag:"RISK",def:"The percentage of borrowers who fail to repay their loans. Used in break-even analysis for credit decisions. From your case: 2% default rate on a $300 transaction changes the approve/decline decision.",why:"C1 PM context: Used in the credit card over-limit case directly. Break-even default rate = the default rate at which revenue equals loss. Every credit product decision has one."},
+  {term:"Collections",cat:"risk",tag:"RISK",def:"The process of recovering unpaid balances from delinquent customers. Includes internal collections teams, third-party debt collectors, and legal action. Capital One has a large collections operation.",why:"C1 PM context: Features that reduce collections burden (early alert, hardship programs, AI-driven payment reminders) are product opportunities with direct cost impact. Quantify: cost per collection account vs. cost of proactive feature."},
+  {term:"Loss Given Default (LGD)",cat:"risk",tag:"RISK",def:"The amount Capital One loses when a customer defaults, after any recovery. If a $1,000 balance defaults and C1 recovers $200, LGD = $800 (80%).",why:"C1 PM context: Used in risk modeling for credit decisions. When pitching a new credit feature, you may need to model expected LGD × default rate to get CFO sign-off."},
+  {term:"Probability of Default (PD)",cat:"risk",tag:"RISK",def:"The statistical likelihood that a borrower will default within a given time period. Used in C1's underwriting models. Higher PD = lower credit limit offered or declined.",why:"C1 PM context: Auto Navigator pre-qualification uses PD models in real-time. CreditWise helps customers understand what drives their PD. A product PM must understand what signals PD models use."},
+  {term:"Dispute",cat:"risk",tag:"RISK",def:"A customer's formal challenge to a charge on their account — claiming it was fraudulent, unauthorized, or incorrect. C1 must investigate within regulatory timeframes (Reg Z / Reg E).",why:"C1 PM context: Disputes are costly to process ($15–50 per dispute). Eno's virtual card numbers reduce dispute rates by isolating merchant breaches. This is a quantifiable ROI for the virtual card feature."},
+  {term:"Fraud Rate",cat:"fraud",tag:"FRAUD",def:"The percentage of transactions that are unauthorized/fraudulent. Measured in basis points (bps). Industry average ~6–8bps. Capital One uses ML models to flag suspicious transactions in real-time.",why:"C1 PM context: Mobile check deposit fraud (same check deposited twice) is from your case. Any new payment feature must model expected fraud rate × average transaction amount to assess risk."},
+  {term:"Card-Not-Present (CNP) Fraud",cat:"fraud",tag:"FRAUD",def:"Fraud occurring in online transactions where the physical card isn't used — the most common type. Eno's virtual card numbers directly address CNP fraud by giving each merchant a unique card number.",why:"C1 PM context: Eno virtual cards = a direct product response to CNP fraud. When pitching Eno features, quantify: CNP fraud rate × average transaction × customers protected = fraud prevented ($)."},
+  {term:"Chargeback",cat:"fraud",tag:"FRAUD",def:"When a customer disputes a transaction and C1 forcibly reverses it, billing the merchant's bank instead. Different from a write-off — C1 recoups money from the merchant network.",why:"C1 PM context: High chargeback rates signal either merchant fraud issues or customer abuse. A feature that reduces illegitimate chargebacks (better transaction descriptions, real-time merchant info) has direct cost savings."},
+  {term:"Account Takeover (ATO)",cat:"fraud",tag:"FRAUD",def:"When a fraudster gains access to a legitimate customer's account by stealing credentials. Eno alerts and real-time transaction notifications are primary defenses.",why:"C1 PM context: ATO is a growing threat as more transactions move digital. Features like biometric auth, device fingerprinting, and Eno real-time alerts are ATO countermeasures with quantifiable fraud-prevented ROI."},
+  {term:"Synthetic Identity Fraud",cat:"fraud",tag:"FRAUD",def:"A fraudster creates a fake identity (real SSN + fake name) to open a credit account, builds credit history, then maxes out and disappears. Hardest to detect — it looks like a real customer.",why:"C1 PM context: CreditWise Dark Web monitoring is partly a defense against synthetic identity. At Director level: knowing the fraud types shows operational depth when discussing credit product decisions."},
+
+  // ── KEY METRICS ──
+  {term:"NPS (Net Promoter Score)",cat:"metrics",tag:"METRICS",def:"A customer loyalty metric: 'How likely are you to recommend Capital One to a friend?' (0–10). Promoters (9–10) minus Detractors (0–6). Range: −100 to +100. C1 tracks NPS across all products.",why:"C1 PM context: NPS is a guardrail metric — it tells you if a feature is hurting customer sentiment even if other metrics look fine. Always include NPS as a health check in your metrics frameworks."},
+  {term:"CSAT (Customer Satisfaction Score)",cat:"metrics",tag:"METRICS",def:"Post-interaction satisfaction score, typically 1–5 stars. Measured after customer service calls, app interactions, or specific feature use. More granular than NPS — tied to specific touchpoints.",why:"C1 PM context: Eno's CSAT after a virtual card creation or fraud alert is a direct feature metric. For Director-level answers: CSAT at the feature level + NPS at the product level = full satisfaction picture."},
+  {term:"DAU / MAU",cat:"metrics",tag:"METRICS",def:"Daily Active Users / Monthly Active Users. The ratio (DAU/MAU) measures stickiness — how frequently monthly users return daily. Industry benchmark: >20% is strong for financial apps.",why:"C1 PM context: Capital One Mobile App, Eno, and Shopping all track DAU/MAU. A DAU/MAU drop without user loss signals engagement decline — classic DEC case prompt."},
+  {term:"Average Transaction Amount (ATA)",cat:"metrics",tag:"METRICS",def:"The average dollar value of a single credit card transaction. Key metric for interchange revenue modeling. Formula: Total Spend ÷ Number of Transactions.",why:"C1 PM context: Used in financial cases — 'Average spend is $200/month' means ~10–15 transactions at an ATA of $13–20. Venture X cardholders have much higher ATA than entry-level cards."},
+  {term:"Average Spend Per Cardholder",cat:"metrics",tag:"METRICS",def:"Total monthly/annual spend divided by active cardholders. A key revenue driver — interchange income scales directly with this number. Venture X target: $2,000+/month per cardholder.",why:"C1 PM context: Rewards programs, Shopping cashback, and travel features are all designed to increase average spend. Every 1% increase in average spend = direct interchange revenue uplift."},
+  {term:"Activation Rate",cat:"metrics",tag:"METRICS",def:"The percentage of acquired customers or new feature users who complete a 'first key action' (first purchase, first Eno alert enabled, first virtual card created). Eno's activation rate is notably low at ~12%.",why:"C1 PM context: Low activation = awareness or UX friction problem. Always the first metric to check after a product launch. From your cases: tripling Eno activation from 12% → 36% is the Director-level target."},
+  {term:"Retention Rate",cat:"metrics",tag:"METRICS",def:"The percentage of customers or users still active at a given time after acquisition. D7, D30, D90 (7-day, 30-day, 90-day) retention. Annual card retention = % renewing at fee anniversary.",why:"C1 PM context: Venture X's year-2 retention around the $395 fee date is the key PM challenge. CreditWise retention is strong (habit-forming). Shopping extension retention drops sharply after install."},
+  {term:"Churn Rate",cat:"metrics",tag:"METRICS",def:"The percentage of customers who cancel or become inactive in a given period. Inverse of retention. Monthly churn = customers lost ÷ starting customers. Annual card churn is a critical P&L lever.",why:"C1 PM context: A 1% reduction in Venture X churn at $395/card = significant annual fee revenue retained. Always model churn impact when proposing retention features."},
+  {term:"Customer Acquisition Cost (CAC)",cat:"metrics",tag:"METRICS",def:"Total marketing and sales cost to acquire one new customer. For credit cards: sign-up bonuses + marketing + underwriting cost. Venture X CAC is high due to 75K mile bonus (~$750 value).",why:"C1 PM context: Shopping and CreditWise are lower-CAC acquisition funnels vs. direct card marketing. If Shopping converts 1% of 10M users to C1 cards, and CAC via direct channel is $300, Shopping saves $30M/year in acquisition costs."},
+  {term:"Customer Lifetime Value (CLV / LTV)",cat:"metrics",tag:"METRICS",def:"The total net revenue expected from a customer over their relationship with C1. Formula: Avg Annual Revenue per Customer × Retention Rate ÷ Churn Rate.",why:"C1 PM context: Director-level PMs justify features by CLV impact, not just near-term revenue. A feature that extends customer tenure by 6 months × avg annual revenue = quantified CLV improvement."},
+  {term:"Conversion Rate",cat:"metrics",tag:"METRICS",def:"The percentage of users who complete a desired action (apply for card, pre-qualify, activate feature). Funnel-specific: install → activation, pre-qualify → loan origination, CreditWise user → card applicant.",why:"C1 PM context: Shopping's conversion rate (installs → C1 card applications) is the core strategic metric. Auto Navigator's pre-qualify → dealership visit conversion (currently ~60%) is a product gap."},
+  {term:"Loan Origination Volume",cat:"metrics",tag:"METRICS",def:"The total dollar value of new loans funded in a period. For Auto Navigator: the total value of auto loans issued through the platform. Key revenue growth metric for lending products.",why:"C1 PM context: Auto Navigator's North Star metric. Every feature decision (pre-qual UX, dealer integration, payment calculator) should be traced back to: does this increase loan originations?"},
+
+  // ── PRODUCT-SPECIFIC METRICS ──
+  {term:"Credits (C1 Shopping)",cat:"shopping",tag:"SHOPPING",def:"Capital One Shopping's cashback currency. Earned when users shop through the extension with a linked C1 card. Redeemable for gift cards or statement credit. Not the same as miles/points.",why:"C1 PM context: Credits redemption rate is a key engagement metric for Shopping. Low redemption signals users don't understand the value prop — a UX/communications problem, not a product-market fit problem."},
+  {term:"Savings Delivered",cat:"shopping",tag:"SHOPPING",def:"The total dollar amount of coupons, price drops, and cashback found for Shopping users. C1 Shopping's headline value metric and primary user-facing North Star.",why:"C1 PM context: 'C1 Shopping saved users $X billion' is the product's value story. On the PM side, Savings Delivered per MAU is a better North Star than raw install count — it measures actual value creation."},
+  {term:"Price History / Price Drop Alert",cat:"shopping",tag:"SHOPPING",def:"C1 Shopping tracks price history for products and alerts users when prices drop. A key differentiator vs. basic coupon tools. Drives re-engagement after install.",why:"C1 PM context: Price drop alerts are the Shopping feature most likely to drive repeat engagement (retention). Consider this when asked about activation vs. retention trade-offs in Shopping product cases."},
+  {term:"Virtual Card Number (VCN)",cat:"product",tag:"PRODUCT",def:"A unique, single-merchant credit card number generated by Eno. Protects the real card number. If the merchant is breached, only that VCN is compromised — not the real account.",why:"C1 PM context: Eno's most defensible differentiator. VCNs reduce CNP fraud, chargebacks, and disputes. Quantifiable value: disputes cost $15–50 each to process. If VCN prevents 500K disputes/year, that's $7.5M–25M in cost avoidance."},
+  {term:"Score Simulator",cat:"product",tag:"PRODUCT",def:"CreditWise feature that lets users model 'what-if' scenarios: 'What happens to my score if I pay off $2,000 in debt?' Drives engagement and financial literacy.",why:"C1 PM context: Score Simulator is CreditWise's highest-engagement feature. Users who use it have higher retention and higher C1 card conversion. This is your evidence for why CreditWise should stay free — it's the top-of-funnel."},
+  {term:"Dark Web Monitoring",cat:"product",tag:"PRODUCT",def:"CreditWise scans the dark web for a user's SSN, email, and personal data. Alerts them if found in a data breach. A differentiated feature vs. Credit Karma basic tier.",why:"C1 PM context: Dark Web Monitoring is CreditWise's Kano Delighter — unexpected, creates strong emotional value (safety), and is hard to replicate without infrastructure investment."},
+  {term:"Pre-Qualification (Pre-Qual)",cat:"product",tag:"PRODUCT",def:"A soft-pull credit check that shows a customer their likely loan terms without impacting their credit score. Auto Navigator's key UX advantage — customers know their rate before stepping into a dealership.",why:"C1 PM context: Pre-qual is the top-of-funnel hook for Auto Navigator. The 40% pre-qual → dealership drop-off is the core product problem. What happens between pre-qual and dealership visit?"},
+  {term:"Soft Pull vs. Hard Pull",cat:"credit",tag:"CREDIT",def:"Soft pull = credit inquiry that doesn't affect score (used for pre-qualification, CreditWise monitoring). Hard pull = full credit inquiry that shows on credit report (used for formal application). C1's competitive advantage is soft-pull pre-qual.",why:"C1 PM context: Auto Navigator's soft-pull pre-qual is a key differentiator — customers can shop rates without score impact. This is why the feature drives high funnel volume (low friction entry)."},
+  {term:"Containment Rate",cat:"product",tag:"PRODUCT",def:"The percentage of customer service inquiries resolved by Eno (or the app/IVR) without requiring a human agent. High containment = lower operational cost.",why:"C1 PM context: Eno's containment rate is a key efficiency metric. Every 1% improvement in Eno containment reduces live agent calls. For a company with tens of millions of customers, this is a multi-million dollar metric."},
+
+  // ── BANKING / FINANCIAL ──
+  {term:"Demand Deposit Account (DDA)",cat:"banking",tag:"BANKING",def:"A standard checking or savings account where funds can be withdrawn at any time. Capital One 360 Checking and 360 Performance Savings are DDAs.",why:"C1 PM context: C1's banking products (360 Checking) are tightly integrated with the Mobile App. DDA customers have higher cross-product engagement than credit-card-only customers."},
+  {term:"FDIC Insurance",cat:"banking",tag:"BANKING",def:"Federal Deposit Insurance Corporation insures bank deposits up to $250,000 per depositor. All Capital One deposit products are FDIC-insured.",why:"C1 PM context: A trust signal for any C1 banking product conversation. Fintech competitors (Chime, Wise) are not banks — their FDIC coverage is through partner banks. C1's direct FDIC status is a competitive advantage."},
+  {term:"Fed Funds Rate",cat:"banking",tag:"BANKING",def:"The interest rate at which banks lend to each other overnight. Set by the Federal Reserve. Directly affects Capital One's cost of funds and the APRs it can offer.",why:"C1 PM context: Rising rates increase NIM (good for C1's interest income) but also increase customer default risk. Know that macro rate environment affects every credit product decision."},
+  {term:"Zelle",cat:"banking",tag:"BANKING",def:"A real-time P2P payment network integrated into Capital One Mobile App. Allows instant transfers between bank accounts. A table-stakes feature for major banks.",why:"C1 PM context: Zelle is a Must-Be feature (Kano model) — its absence would be a competitive liability. Not a differentiator, but required. Contrast with Eno virtual cards, which are a Delighter."},
+  {term:"ACH Transfer",cat:"banking",tag:"BANKING",def:"Automated Clearing House — the electronic network for bank-to-bank transfers. Standard for direct deposit, bill pay, and scheduled transfers. Settles in 1–3 business days vs. Zelle's real-time.",why:"C1 PM context: ACH is the backend for most recurring payment features. Faster settlement (same-day ACH) is a product improvement C1 offers on some accounts."},
+  {term:"CFPB (Consumer Financial Protection Bureau)",cat:"banking",tag:"BANKING",def:"The federal regulator that oversees consumer financial products — credit cards, mortgages, auto loans. Enforces fair lending, truth-in-lending, and dispute resolution rules.",why:"C1 PM context: Any credit or payments feature must clear CFPB regulatory review. At Director level: mention regulatory constraints when discussing product decisions. 'We'd need to validate this with compliance and CFPB fair lending guidelines' signals seniority."},
+  {term:"Fair Lending / ECOA",cat:"banking",tag:"BANKING",def:"Equal Credit Opportunity Act — prohibits discrimination in credit decisions based on race, gender, age, religion, etc. Credit algorithms (like Auto Navigator's pre-qual) must be tested for disparate impact.",why:"C1 PM context: Any ML-based credit feature must be audited for fair lending compliance. Mention this when discussing underwriting features — it signals you understand the regulatory guardrails of fintech PM work."},
+
+  // ── STRATEGY / BUSINESS ──
+  {term:"Co-Brand Card",cat:"strategy",tag:"STRATEGY",def:"A credit card issued jointly by C1 and a retail/airline/hotel partner (e.g., Walmart Credit Card by Capital One). Revenue and rewards are shared between C1 and the partner.",why:"C1 PM context: Co-brand economics are complex — partner gets a share of interchange and interchange-funded rewards. Evaluating a new co-brand partnership uses the MRT framework + partner economics analysis."},
+  {term:"TAM / SAM / SOM",cat:"strategy",tag:"STRATEGY",def:"Total Addressable Market / Serviceable Addressable Market / Serviceable Obtainable Market. Used in market sizing. TAM = everyone, SAM = those C1 can reach, SOM = realistic capture in 3–5 years.",why:"C1 PM context: Use TAM/SAM/SOM to frame any new product opportunity. 'CreditWise TAM = 250M US adults. SAM = 100M interested in credit monitoring. SOM = 30M reachable via digital channels in 3 years.'"},
+  {term:"CAC : LTV Ratio",cat:"strategy",tag:"STRATEGY",def:"The ratio of Customer Acquisition Cost to Lifetime Value. Healthy ratio: LTV ≥ 3× CAC. If CAC is $300 and LTV is $900, the ratio is 3:1 — borderline. Venture X sign-up bonus makes CAC high.",why:"C1 PM context: Shopping and CreditWise are valuable precisely because their CAC is near-zero (organic installs) while LTV (if converted to C1 card) is high. Frame this when discussing the strategic value of free products."},
+  {term:"North Star Metric",cat:"strategy",tag:"STRATEGY",def:"The single most important metric that captures a product's core value delivery. CreditWise: credit score improvement. Shopping: savings delivered. Auto Navigator: loans originated. Mobile App: monthly engaged users.",why:"C1 PM context: In any 'how do you measure success' question, lead with the North Star before listing input metrics. Explain why it captures value — and what it excludes (guardrail metrics)."},
+  {term:"Payback Period",cat:"strategy",tag:"STRATEGY",def:"How long it takes to recoup an investment. Formula: Investment ÷ Annual Profit. A $5M feature build that generates $2M/year in savings has a 2.5-year payback period.",why:"C1 PM context: Use payback period when making build-vs-buy-vs-partner decisions. 'This feature has a 2.5-year payback against a 5-year product horizon — I'd recommend building it.'"},
+  {term:"Unit Economics",cat:"strategy",tag:"STRATEGY",def:"The per-customer or per-transaction profitability of a product. Revenue per unit − cost per unit = contribution margin per unit. Used to assess scalability.",why:"C1 PM context: Always compute unit economics before recommending a new credit feature. 'At $10 interchange per account per month and $3 fraud/servicing cost, unit margin is $7 — profitable at 500K accounts.'"},
+  {term:"Embedded Finance",cat:"strategy",tag:"STRATEGY",def:"Financial products (credit, insurance, payments) integrated directly into non-financial platforms. Example: Auto Navigator embedded at dealership POS. Buy Now Pay Later integrated at checkout.",why:"C1 PM context: A key C1 growth vector. Auto Navigator at the dealership is embedded finance. Shopping credits at checkout is embedded finance. Use this lens when asked about C1's 5-year strategy."},
+];
+
+let glFilter = 'all';
+let glSearch = '';
 const INSIDER_TIPS = [
   {icon:"🔴",src:"CAPITAL ONE CAREERS · OFFICIAL",text:"<strong>There is no single right answer.</strong> C1 explicitly says cases are open-ended conversations. Your answer = a recommendation backed by evidence from your reasoning process. They want your logic as much as your conclusion."},
   {icon:"📐",src:"IGOTANOFFER · DIRECTOR-LEVEL GUIDE",text:"<strong>Framework before diving in — always.</strong> State your structure out loud: 'I'd like to approach this using a revenue-cost framework across three customer segments...' C1 interviewers evaluate HOW you think, not just the answer."},
@@ -415,10 +528,22 @@ const MOCK_CASES = {
 
 // ═══════════════════════ API ═══════════════════════
 async function callClaude(messages, system) {
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
-    method:"POST", headers:{"Content-Type":"application/json"},
-    body: JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,system,messages})
-  });
+  const key = window._apiKey || localStorage.getItem('c1_api_key') || '';
+  if (!key) throw new Error("No API key set. Please enter your Anthropic API key in the field at the top of the page.");
+  const payload = JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,system,messages});
+  const directHeaders = {
+    "Content-Type":"application/json",
+    "x-api-key": key,
+    "anthropic-version":"2023-06-01",
+    "anthropic-dangerous-direct-browser-access":"true"
+  };
+  let res;
+  try {
+    res = await fetch("https://api.anthropic.com/v1/messages", {method:"POST", headers:directHeaders, body:payload});
+  } catch(e) {
+    const proxyHeaders = {"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"};
+    res = await fetch("https://corsproxy.io/?url=https://api.anthropic.com/v1/messages", {method:"POST", headers:proxyHeaders, body:payload});
+  }
   const data = await res.json();
   if (data.error) throw new Error(data.error.message);
   return data.content.map(b=>b.text||"").join("");
@@ -436,7 +561,18 @@ let expandedCase = null;
 // ═══════════════════════ RENDER ═══════════════════════
 function render() {
   const app = document.getElementById('app');
-  if (!appState.mode) { app.innerHTML = renderLanding(); return; }
+  if (!appState.mode) {
+    app.innerHTML = renderLanding();
+    // Restore saved key display
+    const k = window._apiKey || '';
+    const inp = document.getElementById('apiKeyInput');
+    const banner = document.getElementById('apiBanner');
+    const label = document.getElementById('apiLabel');
+    if (inp && k) { inp.value = k; }
+    if (k && banner) { banner.classList.add('ok'); }
+    if (k && label) { label.className='api-label ok'; label.textContent='✓ API KEY SAVED — READY'; }
+    return;
+  }
   const ml = {mock:'Mock Interview',prep:'Prep & Study Hub',pitch:'Pitch Trainer',cases:'Case Library'}[appState.mode];
   app.innerHTML = `
     <div>
@@ -465,6 +601,11 @@ function renderLanding() {
       <span class="badge">6 C1 Products</span><span class="badge">10 Real Cases</span>
       <span class="badge">22 Frameworks</span><span class="badge">AI Interviewer</span>
       <span class="badge">Math Reference</span><span class="badge">Pitch Scoring</span>
+    </div>
+    <div class="api-banner" id="apiBanner" style="max-width:620px;width:100%;margin-bottom:28px">
+      <span class="api-label" id="apiLabel">⚠ API KEY REQUIRED</span>
+      <input class="api-input" id="apiKeyInput" type="password" placeholder="sk-ant-api03-..." value="">
+      <button class="api-save" onclick="saveApiKey()">Save Key</button>
     </div>
     <div class="mode-grid">
       <div class="mode-card" onclick="selectMode('mock')">
@@ -495,7 +636,7 @@ function renderSidebar() {
   const m = appState.mode, s = appState.section;
   const items = {
     mock:[{id:'Mobile App',i:'📱'},{id:'Shopping',i:'🛍️'},{id:'Eno',i:'🤖'},{id:'CreditWise',i:'📊'},{id:'Auto Navigator',i:'🚗'},{id:'Venture X',i:'✈️'}],
-    prep:[{id:'frameworks',i:'🗂️',l:'Frameworks'},{id:'math',i:'🧮',l:'Math Reference'},{id:'insider',i:'🔍',l:'Insider Tips'},{id:'products',i:'🏦',l:'Product Knowledge'},{id:'questions',i:'❓',l:'Common Questions'}],
+    prep:[{id:'frameworks',i:'🗂️',l:'Frameworks'},{id:'math',i:'🧮',l:'Math Reference'},{id:'glossary',i:'📖',l:'Banking Glossary'},{id:'insider',i:'🔍',l:'Insider Tips'},{id:'products',i:'🏦',l:'Product Knowledge'},{id:'questions',i:'❓',l:'Common Questions'}],
     pitch:PITCH_PROMPTS.map((p,i)=>({id:`p${i}`,i:{Mobile:'📱',Shopping:'🛍️',Eno:'🤖',CreditWise:'📊',Auto:'🚗',Venture:'✈️'}[p.product.split(' ')[0]]||'🎯',l:p.product})),
     cases:[{id:'all',i:'📂',l:'All Cases'},{id:'financial',i:'💰',l:'Financial'},{id:'strategy',i:'♟️',l:'Strategy'},{id:'product',i:'🎨',l:'Product'}]
   }[m]||[];
@@ -560,12 +701,12 @@ function renderScorecard(s) {
 
 // ── PREP HUB ──
 function renderPrep(section) {
-  if (['frameworks','math','insider','products','questions'].includes(section)) prepTab=section;
+  if (['frameworks','math','glossary','insider','products','questions'].includes(section)) prepTab=section;
   return `<div class="prep-wrap">
     <h2>Prep & Study Hub</h2>
     <p class="prep-sub">22 frameworks (PM + your BA flashcards), math quick-reference, insider tips, product knowledge, and common questions with coaching.</p>
     <div class="prep-tabs">
-      ${['frameworks','math','insider','products','questions'].map(t=>`<button class="ptab ${prepTab===t?'active':''}" onclick="setPrepTab('${t}')">${{frameworks:'Frameworks',math:'Math Reference',insider:'Insider Tips',products:'Product Knowledge',questions:'Common Questions'}[t]}</button>`).join('')}
+      ${['frameworks','math','glossary','insider','products','questions'].map(t=>`<button class="ptab ${prepTab===t?'active':''}" onclick="setPrepTab('${t}')">${{frameworks:'Frameworks',math:'Math Reference',glossary:'Banking Glossary',insider:'Insider Tips',products:'Product Knowledge',questions:'Common Questions'}[t]}</button>`).join('')}
     </div>
     ${renderPrepContent()}
   </div>`;
@@ -614,6 +755,36 @@ function renderPrepContent() {
       <p style="font-size:11px;color:var(--dim);margin:8px 0 5px">OPPORTUNITIES</p><ul>${p.opportunities.map(o=>`<li>${o}</li>`).join('')}</ul>
     </div>`).join('')}</div>`;
 
+  if (prepTab==='glossary') {
+    const cats = [
+      {id:'all',l:'All Terms'},
+      {id:'credit',l:'Credit Card'},
+      {id:'risk',l:'Risk & Collections'},
+      {id:'fraud',l:'Fraud'},
+      {id:'metrics',l:'Key Metrics'},
+      {id:'product',l:'Product Features'},
+      {id:'shopping',l:'Shopping'},
+      {id:'banking',l:'Banking'},
+      {id:'strategy',l:'Strategy'},
+    ];
+    const filtered = GLOSSARY.filter(g => {
+      const catOk = glFilter==='all' || g.cat===glFilter;
+      const q = glSearch.toLowerCase();
+      const searchOk = !q || g.term.toLowerCase().includes(q) || g.def.toLowerCase().includes(q) || g.why.toLowerCase().includes(q);
+      return catOk && searchOk;
+    });
+    return `
+      <input class="gl-search" id="glSearchInput" placeholder="Search terms, definitions..." value="${glSearch}" oninput="setGlSearch(this.value)">
+      <div class="gl-cats">${cats.map(c=>`<button class="gl-cat ${glFilter===c.id?'active':''}" onclick="setGlFilter('${c.id}')">${c.l}</button>`).join('')}</div>
+      <div class="gl-count">${filtered.length} term${filtered.length!==1?'s':''} ${glFilter!=='all'?'in this category':'total'}</div>
+      <div class="gl-grid">${filtered.map(g=>`
+        <div class="gl-card">
+          <div class="gl-term">${g.term} <span class="gl-tag ${g.cat}">${g.tag}</span></div>
+          <div class="gl-def">${g.def}</div>
+          <div class="gl-why"><strong>▸ C1 PM context:</strong> ${g.why}</div>
+        </div>`).join('')}
+      </div>`;
+  }
   if (prepTab==='questions') return COMMON_QUESTIONS.map(q=>`
     <div class="qcard">
       <div class="qt ${q.tc}">${q.type}</div>
@@ -701,6 +872,8 @@ window.selectMode = m => { appState={mode:m,section:null}; mockState={product:nu
 window.goHome = () => { appState={mode:null,section:null}; render(); };
 window.setSection = s => { appState.section=s; if(appState.mode==='mock')mockState={product:s,messages:[],loading:false,score:null}; render(); };
 window.setPrepTab = t => { prepTab=t; render(); };
+window.setGlFilter = f => { glFilter=f; render(); setTimeout(()=>{const el=document.getElementById('glSearchInput');if(el)el.focus();},50); };
+window.setGlSearch = v => { glSearch=v; render(); setTimeout(()=>{const el=document.getElementById('glSearchInput');if(el){el.focus();el.setSelectionRange(el.value.length,el.value.length);}},10); };
 window.setFWFilter = f => { fwFilter=f; expandedFW=null; render(); };
 window.toggleFW = n => { expandedFW = expandedFW===n?null:n; render(); };
 window.toggleCase = id => { expandedCase=expandedCase===id?null:id; render(); setTimeout(()=>{const el=document.getElementById(`ccase-${id}`);if(el)el.scrollIntoView({behavior:'smooth',block:'nearest'});},50); };
@@ -800,6 +973,21 @@ Respond ONLY with valid JSON (no other text, no markdown fences):
 };
 
 window.resetPitch = () => { const idx=pitchState.idx; pitchState={idx,messages:[],loading:false,feedback:null}; render(); };
+
+window.saveApiKey = () => {
+  const k = document.getElementById('apiKeyInput')?.value?.trim();
+  if (!k) return;
+  window._apiKey = k;
+  try { localStorage.setItem('c1_api_key', k); } catch(e) {}
+  const banner = document.getElementById('apiBanner');
+  const label = document.getElementById('apiLabel');
+  if (banner) { banner.classList.add('ok'); }
+  if (label) { label.className='api-label ok'; label.textContent='✓ API KEY SAVED — READY'; }
+};
+
+// Auto-load saved key
+window._apiKey = '';
+try { const saved = localStorage.getItem('c1_api_key'); if(saved){window._apiKey=saved;} } catch(e){}
 
 render();
 </script>
